@@ -1,0 +1,101 @@
+{
+	// Debug configurations for XKNX Editor. They use the uv environment (.venv, from `uv sync`);
+	// select it as the interpreter too ("Python: Select Interpreter" > .venv).
+	"version": "0.2.0",
+	"configurations": [
+		{
+			"name": "XKNX Editor",
+			"type": "debugpy",
+			"request": "launch",
+			"module": "editor_gui.main",
+			"python": "${workspaceFolder}/.venv/bin/python",
+			"cwd": "${workspaceFolder}",
+			"console": "integratedTerminal",
+			"justMyCode": true
+		},
+		{
+			// Another editor already runs (e.g. the installed app): start this one without asking.
+			"name": "XKNX Editor (New Instance)",
+			"type": "debugpy",
+			"request": "launch",
+			"module": "editor_gui.main",
+			"python": "${workspaceFolder}/.venv/bin/python",
+			"args": ["--new-instance"],
+			"cwd": "${workspaceFolder}",
+			"console": "integratedTerminal",
+			"justMyCode": true
+		},
+		{
+			"name": "XKNX Editor: Open Project…",
+			"type": "debugpy",
+			"request": "launch",
+			"module": "editor_gui.main",
+			"python": "${workspaceFolder}/.venv/bin/python",
+			"args": ["--new-instance", "${input:projectFile}"],
+			"cwd": "${workspaceFolder}",
+			"console": "integratedTerminal",
+			"justMyCode": true
+		},
+		{
+			// The browser UI on http://localhost:8080/ (stop it with the debugger's Stop button).
+			"name": "XKNX Editor (Browser UI)",
+			"type": "debugpy",
+			"request": "launch",
+			"module": "editor_gui.main",
+			"python": "${workspaceFolder}/.venv/bin/python",
+			"args": ["--new-instance", "--web", "--web-no-tray"],
+			"cwd": "${workspaceFolder}",
+			"console": "integratedTerminal",
+			"justMyCode": true
+		},
+		{
+			// The MCP server starts with the editor. A bearer token is read from
+			// XKNX_MCP_AUTH_TOKEN in your environment; none is stored here.
+			"name": "XKNX Editor (MCP Server)",
+			"type": "debugpy",
+			"request": "launch",
+			"module": "editor_gui.main",
+			"python": "${workspaceFolder}/.venv/bin/python",
+			"args": ["--new-instance", "--mcp=127.0.0.1:${input:mcpPort}"],
+			"cwd": "${workspaceFolder}",
+			"console": "integratedTerminal",
+			"justMyCode": true
+		},
+		{
+			"name": "XKNX Editor (Library Code Too)",
+			"type": "debugpy",
+			"request": "launch",
+			"module": "editor_gui.main",
+			"python": "${workspaceFolder}/.venv/bin/python",
+			"args": ["--new-instance"],
+			"cwd": "${workspaceFolder}",
+			"console": "integratedTerminal",
+			// Also step into xknx, xknxproject, imgui-bundle, sqlalchemy, ...
+			"justMyCode": false
+		},
+		{
+			"name": "Pytest: Current File",
+			"type": "debugpy",
+			"request": "launch",
+			"module": "pytest",
+			"python": "${workspaceFolder}/.venv/bin/python",
+			"args": ["-q", "${file}"],
+			"cwd": "${workspaceFolder}",
+			"console": "integratedTerminal",
+			"justMyCode": false
+		}
+	],
+	"inputs": [
+		{
+			"id": "projectFile",
+			"type": "promptString",
+			"description": "Project to open (.xknx, .knxproj or a group-address export .xml)"
+		},
+		{
+			"id": "mcpPort",
+			"type": "promptString",
+			"description": "MCP server port (must be free)",
+			"default": "8766"
+		}
+	]
+}
